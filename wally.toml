@@ -1,0 +1,52 @@
+[package]
+name = "kelvintrinhsg/take-home-assignment"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[place]
+shared-packages = "game.ReplicatedStorage.Packages"
+server-packages = "game.ServerScriptService.ServerPackages"
+
+[dependencies]
+knit = "acecateer/knit@1.7.2"
+trove = "cody-nelson/trove@0.0.1"
+promise = "cody-nelson/promise@4.0.1"
+signal = "neonifieddev/signal@0.0.3"
+timer = "sleitnick/timer@2.0.0"
+shake = "sunspringdev/shake@1.1.0"
+spring = "nyxariko/spring@0.1.1"
+component = "azutreo/component@2.4.10"
+log = "sleitnick/log@0.1.2"
+rodux = "jessekroeske/rodux@3.0.0"
+ReplicaShared = "luminalabsgames/replicashared@1.0.0"
+BufferUtil = "sleitnick/buffer-util@0.3.2"
+Concur = "sleitnick/concur@0.1.2"
+EnumList = "sleitnick/enum-list@2.1.0"
+Find = "sleitnick/find@1.0.0"
+Input = "sleitnick/input@3.0.0"
+Loader = "sleitnick/loader@2.0.0"
+Net = "sleitnick/net@0.2.0"
+Option = "sleitnick/option@1.0.5"
+PID = "sleitnick/pid@2.1.0"
+Quaternion = "sleitnick/quaternion@0.2.3"
+Query = "sleitnick/query@0.2.0"
+Sequent = "sleitnick/sequent@0.1.0"
+Ser = "sleitnick/ser@1.0.5"
+Silo = "sleitnick/silo@0.2.0"
+Streamable = "sleitnick/streamable@1.2.4"
+Symbol = "sleitnick/symbol@2.0.1"
+TableUtil = "sleitnick/table-util@1.2.1"
+TaskQueue = "sleitnick/task-queue@1.0.0"
+Tree = "sleitnick/tree@1.1.0"
+TypedRemote = "sleitnick/typed-remote@0.3.0"
+WaitFor = "sleitnick/wait-for@1.0.0"
+
+[dev-dependencies]
+testez = "roblox/testez@0.4.1"
+
+[server-dependencies]
+cmdr = "vyronax/cmdr@1.13.0"
+replicaserver = "luminalabsgames/replicaserver@1.0.3"
+profilestore = "vyon/profilestore@1.0.3"
+marketplacemanager = "kelvintrinhsg/marketplace-manager@0.1.1"
