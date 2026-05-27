@@ -14,6 +14,7 @@ local BagConfig = require(ReplicatedStorage.Shared.BagConfig)
 local ConveyorVisualComponent = Component.new({
 	Tag = BagConfig.TAG_CONVEYOR,
 	Ancestors = { Workspace },
+	AutoSetup = true,
 })
 
 function ConveyorVisualComponent:Construct()
