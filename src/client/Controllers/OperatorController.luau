@@ -27,17 +27,13 @@ end
 function OperatorController:KnitStart()
 	local BagService = Knit.GetService("BagService")
 	local localPlayer = Players.LocalPlayer
-	print(string.format("[OperatorController] KnitStart; LocalPlayer.UserId=%d", localPlayer.UserId))
 
-	-- Rodux subscription cleanup: pass the disconnect function so Trove treats
-	-- it as a callable (Trove 0.0.1 doesn't recognize lowercase `disconnect`).
-	local lastOperator = -1
+	-- Sentinel must not collide with any valid UserId. Studio's local-server
+	-- test players use negative UserIds (-1, -2, ...) so a numeric sentinel
+	-- like -1 silently breaks the comparison; nil is the only safe choice.
+	local lastOperator: number? = nil
 	local subscription = store.changed:connect(function(newState)
 		local op = newState.operator
-		print(string.format(
-			"[OperatorController] state.operator=%s lastOperator=%s LocalPlayer.UserId=%d",
-			tostring(op), tostring(lastOperator), localPlayer.UserId
-		))
 		if op == lastOperator then
 			-- Still relevant: keep the slider value synced even if operator unchanged.
 			if self._sliderHandle ~= nil then
@@ -48,7 +44,6 @@ function OperatorController:KnitStart()
 		lastOperator = op
 
 		if op == localPlayer.UserId then
-			print("[OperatorController] mounting slider")
 			self:_mountSlider(BagService, newState.spawnRate)
 		else
 			self:_unmountSlider()
@@ -59,10 +54,6 @@ function OperatorController:KnitStart()
 	-- Cover the case where the operator was already us before this subscription
 	-- attached.
 	local current = store:getState()
-	print(string.format(
-		"[OperatorController] initial check: state.operator=%s LocalPlayer.UserId=%d",
-		tostring(current.operator), localPlayer.UserId
-	))
 	if current.operator == localPlayer.UserId then
 		self:_mountSlider(BagService, current.spawnRate)
 		lastOperator = current.operator
