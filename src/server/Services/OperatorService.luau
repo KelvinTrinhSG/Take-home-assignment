@@ -72,7 +72,11 @@ function OperatorService:_recompute()
 
 	local userId = if newOperator ~= nil then newOperator.UserId else 0
 	self._replica:Set({ "OperatorUserId" }, userId)
-	log:AtInfo():Log("Operator is now " .. tostring(newOperator and newOperator.Name or "<none>"))
+	log:AtInfo():Log(string.format(
+		"Operator is now %s (UserId=%d)",
+		tostring(newOperator and newOperator.Name or "<none>"),
+		userId
+	))
 	self.OperatorChangedSignal:Fire(newOperator)
 end
 
