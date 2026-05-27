@@ -35,7 +35,6 @@ function BagComponent:Construct()
 	self._spawnClock = self.Instance:GetAttribute("SpawnClock") or Workspace:GetServerTimeNow()
 	self._spinPhase = math.random() * math.pi * 2 -- random initial spin so bags don't look mechanical
 	self._despawning = false
-	self._logAccum = 0 -- accumulator so we throttle position logs to once per ~0.5s
 
 	-- Set up the starting visual state for the spawn animation. The Part is
 	-- already at the correct world XZ position (BagController seeded it above
@@ -71,7 +70,7 @@ function BagComponent:Start()
 	end
 end
 
-function BagComponent:RenderSteppedUpdate(dt: number)
+function BagComponent:RenderSteppedUpdate(_dt: number)
 	if self._despawning then
 		-- Tween owns the part's CFrame during despawn; don't fight it.
 		return
@@ -86,17 +85,6 @@ function BagComponent:RenderSteppedUpdate(dt: number)
 	-- Small spin around Y so the bag isn't visually static.
 	local angle = (elapsed + self._spinPhase) * 1.5
 	self.Instance.CFrame = CFrame.new(pos) * CFrame.Angles(0, angle, 0)
-
-	-- Throttled position log so the output stays readable with many bags alive.
-	self._logAccum += dt
-	if self._logAccum >= 0.5 then
-		self._logAccum = 0
-		local bagId = self.Instance:GetAttribute("BagId")
-		print(string.format(
-			"[Bag %s] pos=(%.2f, %.2f, %.2f) elapsed=%.2fs",
-			tostring(bagId), pos.X, pos.Y, pos.Z, elapsed
-		))
-	end
 end
 
 function BagComponent:_despawn()
