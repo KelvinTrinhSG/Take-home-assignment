@@ -28,8 +28,10 @@ function OperatorController:KnitStart()
 	local BagService = Knit.GetService("BagService")
 	local localPlayer = Players.LocalPlayer
 
+	-- Rodux subscription cleanup: pass the disconnect function so Trove treats
+	-- it as a callable (Trove 0.0.1 doesn't recognize lowercase `disconnect`).
 	local lastOperator = -1
-	self._trove:Add(store.changed:connect(function(newState, _oldState)
+	local subscription = store.changed:connect(function(newState)
 		local op = newState.operator
 		if op == lastOperator then
 			-- Still relevant: keep the slider value synced even if operator unchanged.
@@ -45,7 +47,8 @@ function OperatorController:KnitStart()
 		else
 			self:_unmountSlider()
 		end
-	end))
+	end)
+	self._trove:Add(subscription.disconnect)
 
 	-- Cover the case where the operator was already us before this subscription
 	-- attached.

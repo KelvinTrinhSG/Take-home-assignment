@@ -30,9 +30,11 @@ function BagController:KnitStart()
 	self._folder = folder
 
 	-- Subscribe to the bags slice. Rodux's store.changed fires (newState, oldState)
-	-- on every dispatched action, so we diff to detect adds and removes.
+	-- on every dispatched action, so we diff to detect adds and removes. The
+	-- returned table uses lowercase `disconnect`, which Trove 0.0.1 doesn't
+	-- auto-detect — pass the function directly so Trove treats it as a callable.
 	local lastBags = store:getState().bags
-	self._trove:Add(store.changed:connect(function(newState, _oldState)
+	local subscription = store.changed:connect(function(newState)
 		local newBags = newState.bags
 		if newBags == lastBags then
 			return
@@ -53,7 +55,8 @@ function BagController:KnitStart()
 		end
 
 		lastBags = newBags
-	end))
+	end)
+	self._trove:Add(subscription.disconnect)
 
 	-- Handle bags that were already present when the controller started (e.g.
 	-- BAGS_RESET dispatched from ReplicaController before this subscription).
